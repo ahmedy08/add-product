@@ -4,7 +4,7 @@
       <img class="card-img-top" :src="product.selectedImage" :alt="product.name">
       <div class="card-body">
         <h5 class="card-title">{{ product.name }}</h5>
-        <small><strong>Adet : </strong> {{ product.piece}}</small>
+        <small><strong>Adet : </strong> {{ product.piece }}</small>
         <br>
         <small><strong>Fiyat : </strong> {{ product.price }}</small>
         <br>
@@ -28,8 +28,13 @@ export default {
     }
   },
   created() {
-    eventBus.$on("productAdded", (product) =>{
-      this.productList.push(product)
+    eventBus.$on("productAdded", (product) => {
+      if (this.productList.length < 10) {
+        this.productList.push(product)
+        eventBus.$emit("updateProgressBar", this.productList.length)
+      } else {
+        alert("Daha fazla ürün ekleyemezsiniz!")
+      }
     })
   }
 }
